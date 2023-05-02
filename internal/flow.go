@@ -12,9 +12,9 @@ import (
 )
 
 const (
-	fff = ".facebook.com"
-	ggg = "google.com"
-	lll = "live.com"
+	Cfff = ".facebook.com"
+	Cggg = "google.com"
+	Clll = "live.com"
 )
 
 var jsonData []interface{}
@@ -97,7 +97,7 @@ func MainBL(browser model.BrowserPaths) {
 		fmt.Println(jsonString)
 		isLogin := pkg.CheckLogin(token)
 		if isLogin != nil {
-			fmt.Println(isLogin)
+			token = pkg.FilterCookieConditions(token)
 
 		}
 

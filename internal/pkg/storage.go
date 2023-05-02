@@ -3,7 +3,6 @@ package pkg
 import (
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
-	"strings"
 )
 
 const (
@@ -53,22 +52,4 @@ func QueryData(db *sql.DB, querySQL string) ([]map[string]interface{}, error) {
 	}
 
 	return result, nil
-}
-
-func CheckLogin(cookie []map[string]interface{}) interface{} {
-	for _, row := range cookie {
-		value, ok := row["host_key"].(string)
-		if !ok {
-			continue
-		}
-		if row["name"] == "xs" && strings.Contains(value, "fff") {
-			return row
-
-		}
-	}
-	return nil
-}
-
-func FilterData(cookie []map[string]interface{}, conditions []string) []map[string]interface{} {
-
 }
