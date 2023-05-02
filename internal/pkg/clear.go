@@ -8,7 +8,7 @@ import (
 )
 
 // get all path of sub dir belong paths
-func getDirectories(pathg string) ([]string, error) {
+func GetDirectories(pathg string) ([]string, error) {
 	var dirs []string
 
 	files, err := ioutil.ReadDir(pathg)
@@ -28,7 +28,7 @@ func getDirectories(pathg string) ([]string, error) {
 	return dirs, nil
 }
 
-func deleteFolderRecursive(directoryPath string) error {
+func DeleteFolderRecursive(directoryPath string) error {
 	if _, err := os.Stat(directoryPath); os.IsNotExist(err) {
 		// Thư mục không tồn tại
 		return nil
@@ -43,7 +43,7 @@ func deleteFolderRecursive(directoryPath string) error {
 		if fi, err := os.Stat(file); err == nil {
 			if fi.IsDir() {
 				// Đệ quy xóa thư mục con
-				if err := deleteFolderRecursive(file); err != nil {
+				if err := DeleteFolderRecursive(file); err != nil {
 					return err
 				}
 			} else {
@@ -63,7 +63,7 @@ func deleteFolderRecursive(directoryPath string) error {
 	return nil
 }
 
-func readFiles(dirname string) error {
+func ReadFiles(dirname string) error {
 	files, err := ioutil.ReadDir(dirname)
 	if err != nil {
 		return err

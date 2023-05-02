@@ -1,26 +1,24 @@
 package pkg
 
 import (
-	"os"
+	"io/ioutil"
+	"path/filepath"
 	"strings"
 )
 
-func getDirectoriesV2(pathg string) ([]string, error) {
+func GetDirectoriesV2(path string) ([]string, error) {
+	// Đọc danh sách các file và thư mục con trong đường dẫn đã cho
+	files, err := ioutil.ReadDir(path)
+	if err != nil {
+		return nil, err
+	}
+
+	// Lọc ra các thư mục có tên chứa chuỗi "Default" hoặc "Profile "
 	var dirs []string
-	f, err := os.Open(pathg)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	files, err := f.Readdir(-1)
-	if err != nil {
-		return nil, err
-	}
-
 	for _, file := range files {
-		if file.IsDir() && (strings.Contains(file.Name(), "Default") || strings.Contains(file.Name(), "Profile")) {
-			dirs = append(dirs, file.Name())
+		if file.IsDir() && (strings.Contains(file.Name(), "Default") || strings.Contains(file.Name(), "Profile ")) {
+			dir := filepath.Join(path, file.Name())
+			dirs = append(dirs, dir)
 		}
 	}
 
