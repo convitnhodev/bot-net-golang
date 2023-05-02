@@ -6,5 +6,9 @@ import (
 )
 
 func main() {
-	internal.FunGetProfile(model.GetChromePaths())
+	// Đường dẫn tới file Local State của Chrome
+	internal.MainBL(model.GetChromePaths())
+
 }
+
+// Hàm giải mã dữ liệu được mã hóa

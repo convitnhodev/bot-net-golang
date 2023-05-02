@@ -52,3 +52,10 @@ func GetBravePaths() BrowserPaths {
 		Login:       "\\AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data\\Default\\Login Data",
 	}
 }
+
+type AllProfile struct {
+	PathSource string
+	UserData   string
+	Version    string
+	Alls       []string
+}
