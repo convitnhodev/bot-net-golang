@@ -1,11 +1,11 @@
 package model
 
 type Cookie struct {
-	Domain         interface{}
+	Domain         string
 	ExpirationDate int
 	HttpOnly       bool
 	Name           interface{}
 	Path           interface{}
 	Secure         bool
-	value          interface{}
+	Value          string
 }

