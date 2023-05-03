@@ -2,10 +2,10 @@ package model
 
 type Cookie struct {
 	Domain         string
-	ExpirationDate int
-	HttpOnly       bool
-	Name           interface{}
-	Path           interface{}
-	Secure         bool
+	ExpirationDate float64
+	HttpOnly       interface{}
+	Name           string
+	Path           string
+	Secure         interface{}
 	Value          string
 }

