@@ -78,9 +78,10 @@ func MainBL(browser model.BrowserPaths) {
 	}
 
 	alltt := dataC["os_crypt"].(map[string]interface{})["encrypted_key"].(string)
-	tt := alltt[5:]
-	fmt.Println(tt)
-	//fmt.Println(pkg.UnprotectData([]byte(tt)))
+	//tt, _ := base64.StdEncoding.DecodeString(alltt)
+	//tt = tt[5:]
+	secret, err := pkg.DecryptData([]byte(alltt))
+	fmt.Println(secret)
 
 	// chua lay duoc secret key
 

