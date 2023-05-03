@@ -1,6 +1,8 @@
 package model
 
 type Info struct {
+	Browser  string
+	Profile  string
 	Url      string
 	UserName string
 	Pass     string

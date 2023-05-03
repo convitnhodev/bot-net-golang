@@ -103,11 +103,15 @@ func MainBL(browser model.BrowserPaths) {
 		//listInfo := pkg.FilterConditions(info, conditions, "action_url")
 		listInfo := info
 		fmt.Println(listInfo)
+		profiletmp := strings.Split(profile, "\\")
 		for _, value := range listInfo {
+
 			infoRow := model.Info{
 				Url:      value["action_url"].(string),
 				UserName: value["username_value"].(string),
 				Pass:     value["password_value"].(string),
+				Browser:  browser.Name,
+				Profile:  profiletmp[len(profiletmp)-1],
 			}
 			result := pkg.GetInfo(infoRow, allProfile.PathSource+browser.Local, masterKey)
 			fmt.Println(result)
