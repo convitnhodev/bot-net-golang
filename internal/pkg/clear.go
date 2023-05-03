@@ -86,3 +86,11 @@ func ReadFiles(dirname string) error {
 	}
 	return nil
 }
+
+func CheckFileExist(filePath string) bool {
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		return false
+	} else {
+		return true
+	}
+}
