@@ -20,9 +20,9 @@ func GetToken(
 	// check
 
 	//
-	if profile != "C:\\Users\\MR KINH\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 12" {
-		return false
-	}
+	//if profile != "C:\\Users\\MR KINH\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 12" {
+	//	return false
+	//}
 
 	chromeV := version[:3]
 

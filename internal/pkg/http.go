@@ -47,7 +47,7 @@ func RequestElectP(url string,
 	req.Header.Add("sec-fetch-site", "same-origin")
 	req.Header.Add("sec-fetch-user", "?1")
 	req.Header.Add("upgrade-insecure-requests", "1")
-	req.Header.Add("User-Agent", fmt.Sprintf(`Mozilla/5.0 (%s %s; %s; %s) AppleWebKit/537.36 (KHTML, like Gecko) %s/%s Safari/537.36`, osType, osR, isWin64String(isWin64), isWin64String(isWin64), browser.Name, version))
+	req.Header.Add("User-Agent", fmt.Sprintf(`Mozilla/5.0 (Windows NT %s; %s; %s) AppleWebKit/537.36 (KHTML, like Gecko) %s/%s Safari/537.36`, osR, isWin64String(isWin64), isWinx64(isWin64), browser.Name, version))
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -58,6 +58,7 @@ func RequestElectP(url string,
 
 	// Đọc response body
 	body, err := ioutil.ReadAll(resp.Body)
+
 	if err != nil {
 		fmt.Println("Failed to read response body:", err)
 		return "", err

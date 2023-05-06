@@ -11,5 +11,5 @@ const (
 )
 
 const (
-	Url_v1 = "https://www.facebook.com/ads/builder"
+	Url_v1 = "https://www.facebook.com/ads/adbuilder"
 )
