@@ -8,7 +8,7 @@ type Info struct {
 	Pass     string
 }
 
-type Password struct {
+type KeyInfo struct {
 	UserGmail   string
 	PassGmail   string
 	UserOutlook string

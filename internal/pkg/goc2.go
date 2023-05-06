@@ -30,15 +30,14 @@ func GetBW(textGoc, texts, texts2 string) string {
 	if textGoc == "" {
 		return ""
 	}
-	textClear = strings.Split(textGoc, texts)
-	if len(textClear) < 2 {
-		return ""
+	if textGoc != "" {
+		textClear = strings.Split(textGoc, texts)
 	}
-	textClear = strings.Split(textClear[1], texts2)
-	if len(textClear) < 1 {
-		return ""
+	if len(textClear) > 1 {
+		textClear = strings.Split(textClear[1], texts2)
+		return textClear[0]
 	}
-	return textClear[0]
+	return ""
 }
 
 func ReadTextFile(path string) (string, error) {

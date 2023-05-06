@@ -8,4 +8,6 @@ type Cookie struct {
 	Path           string
 	Secure         interface{}
 	Value          string
+	Key            string
+	Expires        float64
 }
