@@ -1,0 +1,24 @@
+Trình duyệt: Chrome
+C:\Users\MR KINH\AppData\Local\Google\Chrome\User Data\Profile 13
+Uid: 100040047286608
+Tên: THÁI NGUYỄN VIỆT HÙNG
+Cookie: datr=vZ9OZByg8nXtDB7u6URJdket;m_page_voice=100040047286608;sb=vJ9OZM_9fSRxY5XlWR2hhvC6;dpr=1;wd=1920x952;c_user=100040047286608;fr=01rgT4iJHyJomRNtp.AWVKMHeflQoD8VpRgtIn6oJ46UU.BkVyN8.0e.AAA.0.0.BkVyN8.AWW3ZPUEeqs;presence=C%7B%22lm3%22%3A%22u.100050185358849%22%2C%22t3%22%3A%5B%7B%22i%22%3A%22u.100011282623753%22%7D%2C%7B%22i%22%3A%22u.100009147996176%22%7D%2C%7B%22i%22%3A%22u.100004297605983%22%7D%2C%7B%22i%22%3A%22u.1843359745%22%7D%2C%7B%22i%22%3A%22u.100015891274425%22%7D%2C%7B%22i%22%3A%22u.100006473923245%22%7D%5D%2C%22utc3%22%3A1683432317846%2C%22v%22%3A1%7D;xs=21%3Ar_BMfs4TWqHw7w%3A2%3A1682874307%3A-1%3A6197%3A%3AAcV1NEGJ6D0DkZLmqh-Ix2J2IJkXcWEsumk0vKQSBtc;
+Tổng số tài khoản quảng cáo cá nhân: 1
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+Tài khoản quảng cáo số: 1
+Id tài khoản quảng cáo: 360439254927840
+Tên tài khoản quảng cáo: THÁI NGUYỄN VIỆT HÙNG
+Đơn vị tiền tệ: VND
+Múi giờ: 7.00
+Tên vùng: Asia/Ho_Chi_Minh
+Tình trạng: Die
+Số dư: 0
+Ngày tạo: 2020-07-09T01:05:22+0700
+Gốc: 100040047286608
+Là tài khoản trả trước hay không: Có
+Ngưỡng: 0.00
+Đã chi tiêu: 

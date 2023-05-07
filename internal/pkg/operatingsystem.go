@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func getOSName() []byte {
+func GetOSName() []byte {
 	urlCall := fmt.Sprintf("https://api.ipdata.co?api-key=%s", _const.ApiKey)
 	resp, err := http.Get(urlCall)
 	if err != nil {
@@ -25,7 +25,7 @@ func getOSName() []byte {
 }
 
 func GetInfoOperatingSystem() error {
-	result := getOSName()
+	result := GetOSName()
 
 	file_operatingsystem, _ := os.Create("./storage/operatingsystem.json")
 	defer func() {

