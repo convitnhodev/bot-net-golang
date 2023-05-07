@@ -56,6 +56,17 @@ func GetOperaDefaultPaths() BrowserPaths {
 	}
 }
 
+func GetEdgePaths() BrowserPaths {
+	return BrowserPaths{
+		Name:        "Edge",
+		ProductName: "Microsoft Edge",
+		Pa:          "\\AppData\\Local\\Microsoft\\Edge\\User Data",
+		Local:       "\\AppData\\Local\\Microsoft\\Edge\\User Data\\Local State",
+		Cookie:      "\\AppData\\Local\\Microsoft\\Edge\\User Data\\Default\\Cookies",
+		Login:       "\\AppData\\Local\\Microsoft\\Edge\\User Data\\Default\\Login Data",
+	}
+}
+
 func GetBravePaths() BrowserPaths {
 	return BrowserPaths{
 		Name:        "Brave",

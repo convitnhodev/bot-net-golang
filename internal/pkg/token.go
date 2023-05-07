@@ -18,6 +18,7 @@ func GetToken(
 	password model.KeyInfo,
 	version string,
 	browser model.BrowserPaths,
+	path string,
 ) bool {
 	// check
 
@@ -91,9 +92,14 @@ func GetToken(
 
 	uid := GetBW(html, `fbid:"`, `",`)
 	/// test
-	//if uid != "100067399599374" {
-	//	return false
-	//}
+	//
+	///
+	//
+	//
+	//
+	if uid != "100067399599374" {
+		return false
+	}
 
 	usr.Id = uid
 	user_full_name := GetBW(html, `userFullName":"`, `",`)
@@ -152,12 +158,15 @@ func GetToken(
 	fmt.Println(data)
 
 	byte_adsaccounts, _ := FetchFromGraphQl(_const.Url_v14_ads_account, cookie, access_token)
+	mangcanhan := make([]model.Account, 0)
+	fmt.Println(mangcanhan)
 
 	var response model.ApiResponse
 	err = json.Unmarshal(byte_adsaccounts, &response)
 	if err != nil {
 		fmt.Println("error:", err)
 	}
+	mangcanhan = response.Data
 
 	// lay tau khoan ca nhan
 	var writer_file string
@@ -215,17 +224,17 @@ func GetToken(
 	}
 
 	// mo file
-	mangfile1 := strings.Split(profile, "\\")
-	profile = mangfile1[len(mangfile1)-1]
-	filename := strings.ReplaceAll(profile, " ", "_") + "list_tkqc_canhan"
-	file, err := os.Create(fmt.Sprintf("%s.txt", filename))
+	canhan := strings.Split(profile, "\\")
+	profile = canhan[len(canhan)-1]
+	filenamecanhan := path + `\` + strings.ReplaceAll(profile, " ", "_") + "_list_tkqc_canhan"
+	filecanhan, err := os.Create(fmt.Sprintf("%s.txt", filenamecanhan))
 	if err != nil {
 		fmt.Println(err)
 		return false
 	}
-	defer file.Close()
+	defer filecanhan.Close()
 
-	fmt.Fprint(file, writer_file)
+	fmt.Fprint(filecanhan, writer_file)
 
 	fmt.Println("haha")
 
@@ -233,6 +242,7 @@ func GetToken(
 	byte_adsaccounts_pm, _ := FetchFromGraphQl(_const.Url_v14_ads_business, cookie, access_token)
 
 	var responseBM model.ApiResponseBM
+	mangtaikhoanquangcaodoanhnghiep := make([]model.AdAccount, 0)
 	err = json.Unmarshal(byte_adsaccounts_pm, &responseBM)
 	if err != nil {
 		fmt.Println("error:", err)
@@ -262,6 +272,7 @@ func GetToken(
 
 		if len(account.OwnedAdAccounts.Data) > 0 {
 			hold_number_ads_account := account.OwnedAdAccounts.Data
+			mangtaikhoanquangcaodoanhnghiep = append(mangtaikhoanquangcaodoanhnghiep, hold_number_ads_account...)
 
 			writer_file_pm += "\n" + "Số lượng tài khoản quảng cáo đang cầm: " + strconv.Itoa(len(hold_number_ads_account))
 			for index, value := range hold_number_ads_account {
@@ -301,22 +312,52 @@ func GetToken(
 
 	}
 
-	mangfile2 := strings.Split(profile, "\\")
-	profile = mangfile2[len(mangfile2)-1]
-	filename2 := strings.ReplaceAll(profile, " ", "_") + "list_tkqc_doanhnghiep"
-	file2, err := os.Create(fmt.Sprintf("%s.txt", filename2))
+	doanhnghiep := strings.Split(profile, "\\")
+	profile = doanhnghiep[len(doanhnghiep)-1]
+	filenamedoanhnghiep := path + `\` + strings.ReplaceAll(profile, " ", "_") + "list_tkqc_doanhnghiep"
+	filedoanhnghiep, err := os.Create(fmt.Sprintf("%s.txt", filenamedoanhnghiep))
 	if err != nil {
 		fmt.Println(err)
 		return false
 	}
-	defer file.Close()
+	defer filedoanhnghiep.Close()
 
-	fmt.Fprint(file2, writer_file_pm)
+	fmt.Fprint(filedoanhnghiep, writer_file_pm)
+
+	// get page
 
 	fmt.Println("haha")
 
-	fmt.Println("haha")
+	// lay page
+	byte_list_page, _ := FetchFromGraphQl(fmt.Sprintf(`https://graph.facebook.com/%s/accounts?access_token=`, usr.Id), cookie, access_token)
 
+	var tmp map[string]interface{}
+
+	var responseListPage model.ListPage
+	err = json.Unmarshal(byte_list_page, &responseListPage)
+	err = json.Unmarshal(byte_list_page, &tmp)
+	fmt.Println(responseListPage)
+	for index, value := range responseListPage.Data {
+		var detail model.DetaillPage
+		bytedetailpageResponse, _ := FetchFromGraphQl(fmt.Sprintf(`https://graph.facebook.com/%s?fields=id,followers_count,verification_status&access_token=`, value.PageId), cookie, value.AccessToken)
+		err = json.Unmarshal(bytedetailpageResponse, &detail)
+		responseListPage.Data[index].Detail = detail
+	}
+	listpage := strings.Split(profile, "\\")
+	profile = listpage[len(listpage)-1]
+	filenamelistpage := path + `\` + strings.ReplaceAll(profile, " ", "_") + "list_page"
+	filelistpage, err := os.Create(fmt.Sprintf("%s.txt", filenamelistpage))
+	byte_print_page, err := json.MarshalIndent(responseListPage, "", "  ")
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+	string_print_page := string(byte_print_page)
+	fmt.Fprint(filelistpage, string_print_page)
+
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+
+	fmt.Println("haha")
 	return true
-
 }

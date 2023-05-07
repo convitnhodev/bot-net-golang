@@ -1,0 +1,40 @@
+{
+  "data": [
+    {
+      "access_token": "EABBjwQJK1j4BAKGjgvZBPuU3DrNcihimC3zbZB1NjS7pdhwZB3DHplTDTtJo5GZCZBbSgmeuMB1gp5DROZAV5W9ZCZBTcNBlPSpigI1fysyZBFZAa9vRrgFGXAIkaaZByimC1wI5u7mi8zsVtTtc1rCdWEwjnZBohqyh1Kuo6ZC4acAgZB5UjHc0oIyywX",
+      "id": "109266698311355",
+      "name": "Wofsg",
+      "Detail": {
+        "followers_count": 1,
+        "verification_status": "not_verified"
+      },
+      "perms": [
+        "ADMINISTER",
+        "CREATE_CONTENT",
+        "MODERATE_CONTENT",
+        "MESSAGING",
+        "CREATE_ADS",
+        "BASIC_ADMIN",
+        "MANAGE_PAGE_CONTACTS"
+      ]
+    },
+    {
+      "access_token": "EABBjwQJK1j4BAIZBNdf89ZCpUevzGnDHkXrfCucXNSlXNVOtcshW5o8PyxyQ9bmPRKmMALpoVghClhG6vsy40k2gInvLXxsGZBbZAbHTRyIfrf2kuISGs9Lft2rtpfLGkOXM38qZBLjmZBE8vV36nmfkYQaPGyct7ZCeFZAavYJVrHYDwLw9BJLY",
+      "id": "105600585349340",
+      "name": "Wofsg shop",
+      "Detail": {
+        "followers_count": 0,
+        "verification_status": "not_verified"
+      },
+      "perms": [
+        "ADMINISTER",
+        "CREATE_CONTENT",
+        "MODERATE_CONTENT",
+        "MESSAGING",
+        "CREATE_ADS",
+        "BASIC_ADMIN",
+        "MANAGE_PAGE_CONTACTS"
+      ]
+    }
+  ]
+}

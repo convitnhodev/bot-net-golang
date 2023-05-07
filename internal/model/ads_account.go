@@ -164,10 +164,21 @@ type Threshold struct {
 	ThresholdAmount float64 `json:"threshold_amount"`
 }
 
+type DetaillPage struct {
+	Fan          int    `json:"followers_count"`
+	Verification string `json:"verification_status"`
+}
+
 type Page struct {
-	PageId string
-	Name   string
-	Fan    int
+	AccessToken string `json:"access_token"`
+	PageId      string `json:"id"`
+	Name        string `json:"name"`
+	Detail      DetaillPage
+	Perms       []string `json:"perms"`
+}
+
+type ListPage struct {
+	Data []Page `json:"data"`
 }
 
 type AccountFbHoldAds struct {

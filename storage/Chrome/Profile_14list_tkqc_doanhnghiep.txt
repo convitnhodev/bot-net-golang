@@ -1,0 +1,83 @@
+Trình duyệt: Chrome
+Profile 14
+Uid: 100067399599374
+Tên: Guerard Ken Lim
+Cookie: datr=54BWZJF0GS0Gk_AI_SlWGKjQ;c_user=100067399599374;locale=zh_CN;m_page_voice=100067399599374;m_pixel_ratio=1.5;sb=54BWZEZlCivcGc0UwQ2gD__Z;xs=14%3ADI9SEQ6KU7_row%3A2%3A1683390786%3A-1%3A7617;x-referer=eyJyIjoiL2hvbWUucGhwIiwiaCI6Ii9ob21lLnBocCIsInMiOiJtIn0%3D;fr=0CQde8Y5p9p4lRqWS.AWUseYbR-zqZdnrR5p4xZxlV738.BkVoDn.YR.AAA.0.0.BkVpIe.AWU9VDRMejE;presence=EDvF3EtimeF1683402677EuserFA21B67399599374A2EstateFDutF0CEchF_7bCC;usida=eyJ2ZXIiOjEsImlkIjoiQXJ1OTNtemg4anZtdSIsInRpbWUiOjE2ODM0MDMxMDV9;dpr=0.800000011920929;wd=1185x1261;
+Tổng số BM: 2
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+BM số: 1
+Tên BM: Aptech Computer Education Korangi Center
+Id của BM: 2714188195528413
+Trạng thái: verified
+Vai trò: DEVELOPER  ADMIN  
+Số lượng tài khoản quảng cáo đang cầm: 4
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Tài khoản thứ: 1
+Id: act_1503891390116211
+Loại tài khoản: Không trả trước
+Tiền tệ: USD
+Tình trạng: Debit
+Số dư: 103744
+Đã chi tiêu: 800780
+Ngưỡng: 90000.00
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Tài khoản thứ: 2
+Id: act_3294339060818617
+Loại tài khoản: Không trả trước
+Tiền tệ: USD
+Tình trạng: Debit
+Số dư: 44438
+Đã chi tiêu: 200662
+Ngưỡng: 60000.00
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Tài khoản thứ: 3
+Id: act_571840461627329
+Loại tài khoản: Không trả trước
+Tiền tệ: USD
+Tình trạng: Debit
+Số dư: 61517
+Đã chi tiêu: 275591
+Ngưỡng: 60000.00
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Tài khoản thứ: 4
+Id: act_1364902904347740
+Loại tài khoản: Không trả trước
+Tiền tệ: USD
+Tình trạng: Debit
+Số dư: 36549
+Đã chi tiêu: 122549
+Ngưỡng: 40000.00
+
+-----------------------------------------------------------------------------
+BM số: 2
+Tên BM: AA Apps
+Id của BM: 1464406043670911
+Trạng thái: not_verified
+Vai trò: DEVELOPER  ADMIN  
+Số lượng tài khoản quảng cáo đang cầm: 2
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Tài khoản thứ: 1
+Id: act_50325369
+Loại tài khoản: Không trả trước
+Tiền tệ: IDR
+Tình trạng: Debit
+Số dư: 915075
+Đã chi tiêu: 7028245
+Ngưỡng: 2500000.00
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Tài khoản thứ: 2
+Id: act_594542762725390
+Loại tài khoản: Không trả trước
+Tiền tệ: USD
+Tình trạng: Live
+Số dư: 0
+Đã chi tiêu: 0
+Ngưỡng: 0
