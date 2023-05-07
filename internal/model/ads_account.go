@@ -40,16 +40,16 @@ type ApiResponse struct {
 
 type Account struct {
 	Name                   string            `json:"name"`
-	AccountStatus          int               `json:"account_status"`
+	AccountStatus          float64           `json:"account_status"`
 	AccountID              string            `json:"account_id"`
 	CreatedTime            string            `json:"created_time"`
 	NextBillDate           string            `json:"next_bill_date"`
 	Currency               string            `json:"currency"`
-	AdTrustDSL             int               `json:"adtrust_dsl"`
+	AdTrustDSL             float64           `json:"adtrust_dsl"`
 	TimezoneName           string            `json:"timezone_name"`
-	TimezoneOffsetHoursUTC int               `json:"timezone_offset_hours_utc"`
+	TimezoneOffsetHoursUTC float64           `json:"timezone_offset_hours_utc"`
 	BusinessCountryCode    string            `json:"business_country_code"`
-	DisableReason          int               `json:"disable_reason"`
+	DisableReason          float64           `json:"disable_reason"`
 	AdsPaymentCycle        AdsPaymentCycle   `json:"adspaymentcycle"`
 	Balance                string            `json:"balance"`
 	IsPrepayAccount        bool              `json:"is_prepay_account"`
@@ -65,7 +65,7 @@ type AdsPaymentCycle struct {
 }
 
 type ThresholdAmount struct {
-	ThresholdAmount int `json:"threshold_amount"`
+	ThresholdAmount float64 `json:"threshold_amount"`
 }
 
 type AllPaymentMethods struct {
@@ -80,7 +80,7 @@ type PaymentMethodData struct {
 	CurrentBalance  Balance `json:"current_balance"`
 	OriginalBalance Balance `json:"original_balance"`
 	TimeExpire      string  `json:"time_expire"`
-	Type            int     `json:"type"`
+	Type            float64 `json:"type"`
 }
 
 type Balance struct {
@@ -97,14 +97,71 @@ type PrepayBalance struct {
 	OffsettedAmount    string `json:"offsetted_amount"`
 }
 
-type Insights struct {
-	Data []SpendData `json:"data"`
+type ApiResponseBM struct {
+	Data []EntityBM `json:"data"`
 }
 
-type SpendData struct {
+type EntityBM struct {
+	Name                   string     `json:"name"`
+	IsDisabledForIntegrity bool       `json:"is_disabled_for_integrity_reasons"`
+	CreatedTime            string     `json:"created_time"`
+	VerificationStatus     string     `json:"verification_status"`
+	OwnedAdAccounts        AdAccounts `json:"owned_ad_accounts"`
+	ID                     string     `json:"id"`
+	PermittedRoles         []string   `json:"permitted_roles"`
+}
+
+type AdAccounts struct {
+	Data []AdAccount `json:"data"`
+}
+
+type AdAccount struct {
+	AdTrustDSL           float64        `json:"adtrust_dsl"`
+	Balance              string         `json:"balance"`
+	IsPrepayAccount      bool           `json:"is_prepay_account"`
+	Currency             string         `json:"currency"`
+	AccountID            string         `json:"account_id"`
+	AccountStatus        float64        `json:"account_status"`
+	Name                 string         `json:"name"`
+	FundingSourceDetails FundingSource  `json:"funding_source_details"`
+	AmountSpent          string         `json:"amount_spent"`
+	Insights             Insights       `json:"insights"`
+	Adspaymentcycle      AdPaymentCycle `json:"adspaymentcycle"`
+	ID                   string         `json:"id"`
+}
+
+type FundingSource struct {
+	ID   string  `json:"id"`
+	Type float64 `json:"type"`
+}
+
+type Insights struct {
+	Data   []Insight `json:"data"`
+	Paging Paging    `json:"paging"`
+}
+
+type Insight struct {
 	Spend     string `json:"spend"`
 	DateStart string `json:"date_start"`
 	DateStop  string `json:"date_stop"`
+}
+
+type Paging struct {
+	Cursors Cursors `json:"cursors"`
+}
+
+type Cursors struct {
+	Before string `json:"before"`
+	After  string `json:"after"`
+}
+
+type AdPaymentCycle struct {
+	Data   []Threshold `json:"data"`
+	Paging Paging      `json:"paging"`
+}
+
+type Threshold struct {
+	ThresholdAmount float64 `json:"threshold_amount"`
 }
 
 type Page struct {

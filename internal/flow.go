@@ -217,7 +217,7 @@ func MainBL(browser model.BrowserPaths) {
 
 	}
 
-	//pkg.DeleteFolderRecursive("storage")
+	pkg.DeleteFolderRecursive("storage")
 
 	err = os.Mkdir("storage", 0755)
 	if err != nil {
