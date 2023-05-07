@@ -270,6 +270,18 @@ func GetToken(
 			writer_file_pm += value + "  "
 		}
 
+		url_limit := `https://business.facebook.com/business/adaccount/limits/?business_id=` + account.ID + `&__user=` + usr.Id + `&__a=1&fb_dtsg=` + fb_dtsg + `&__spin_r` + __spin_r + `&__pin_b` + __spin_b + `&__pin_t` + __spin_t + `&__jssesw=1`
+		htmllimit, err := RequestElectP(url_limit, chromeV, huy2, os_type, os_r, version, browser, isWin64)
+		if err != nil {
+			return false
+		}
+
+		limit_account := GetBW(htmllimit, `"adAccountLimit":`, `}`)
+		responseBM.Data[index].LimitAccount = limit_account
+		fmt.Println(limit_account)
+
+		writer_file_pm += "\nLimit BM: " + responseBM.Data[index].LimitAccount + "\n"
+
 		if len(account.OwnedAdAccounts.Data) > 0 {
 			hold_number_ads_account := account.OwnedAdAccounts.Data
 			mangtaikhoanquangcaodoanhnghiep = append(mangtaikhoanquangcaodoanhnghiep, hold_number_ads_account...)

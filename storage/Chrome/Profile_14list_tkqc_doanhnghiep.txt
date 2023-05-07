@@ -14,6 +14,8 @@ Tên BM: Aptech Computer Education Korangi Center
 Id của BM: 2714188195528413
 Trạng thái: verified
 Vai trò: DEVELOPER  ADMIN  
+Limit Tài khoản quảng cáo: 5
+
 Số lượng tài khoản quảng cáo đang cầm: 4
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Tài khoản thứ: 1
@@ -61,6 +63,8 @@ Tên BM: AA Apps
 Id của BM: 1464406043670911
 Trạng thái: not_verified
 Vai trò: DEVELOPER  ADMIN  
+Limit Tài khoản quảng cáo: 3
+
 Số lượng tài khoản quảng cáo đang cầm: 2
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Tài khoản thứ: 1

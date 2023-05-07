@@ -108,7 +108,8 @@ type EntityBM struct {
 	VerificationStatus     string     `json:"verification_status"`
 	OwnedAdAccounts        AdAccounts `json:"owned_ad_accounts"`
 	ID                     string     `json:"id"`
-	PermittedRoles         []string   `json:"permitted_roles"`
+	LimitAccount           string
+	PermittedRoles         []string `json:"permitted_roles"`
 }
 
 type AdAccounts struct {
