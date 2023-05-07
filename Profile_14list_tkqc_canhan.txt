@@ -2,7 +2,7 @@ Trình duyệt: Chrome
 C:\Users\MR KINH\AppData\Local\Google\Chrome\User Data\Profile 14
 Uid: 100067399599374
 Tên: Guerard Ken Lim
-Cookie: datr=54BWZJF0GS0Gk_AI_SlWGKjQ;c_user=100067399599374;locale=zh_CN;m_page_voice=100067399599374;m_pixel_ratio=1.5;sb=54BWZEZlCivcGc0UwQ2gD__Z;xs=14%3ADI9SEQ6KU7_row%3A2%3A1683390786%3A-1%3A7617;x-referer=eyJyIjoiL2hvbWUucGhwIiwiaCI6Ii9ob21lLnBocCIsInMiOiJtIn0%3D;fr=0CQde8Y5p9p4lRqWS.AWUseYbR-zqZdnrR5p4xZxlV738.BkVoDn.YR.AAA.0.0.BkVpIe.AWU9VDRMejE;cppo=1;presence=EDvF3EtimeF1683402677EuserFA21B67399599374A2EstateFDutF0CEchF_7bCC;usida=eyJ2ZXIiOjEsImlkIjoiQXJ1OTNtemg4anZtdSIsInRpbWUiOjE2ODM0MDMxMDV9;dpr=1.2000000476837158;wd=1600x752;
+Cookie: datr=54BWZJF0GS0Gk_AI_SlWGKjQ;c_user=100067399599374;locale=zh_CN;m_page_voice=100067399599374;m_pixel_ratio=1.5;sb=54BWZEZlCivcGc0UwQ2gD__Z;xs=14%3ADI9SEQ6KU7_row%3A2%3A1683390786%3A-1%3A7617;x-referer=eyJyIjoiL2hvbWUucGhwIiwiaCI6Ii9ob21lLnBocCIsInMiOiJtIn0%3D;fr=0CQde8Y5p9p4lRqWS.AWUseYbR-zqZdnrR5p4xZxlV738.BkVoDn.YR.AAA.0.0.BkVpIe.AWU9VDRMejE;cppo=1;presence=EDvF3EtimeF1683402677EuserFA21B67399599374A2EstateFDutF0CEchF_7bCC;usida=eyJ2ZXIiOjEsImlkIjoiQXJ1OTNtemg4anZtdSIsInRpbWUiOjE2ODM0MDMxMDV9;dpr=0.800000011920929;wd=1185x1261;
 Tổng số tài khoản quảng cáo cá nhân: 16
 -----------------------------------------------------------------------------
 
@@ -166,12 +166,12 @@ Tên tài khoản quảng cáo: Đi lắc - 5
 Múi giờ: 7.00
 Tên vùng: Asia/Ho_Chi_Minh
 Tình trạng: Live
-Số dư: 11880
+Số dư: 12751
 Ngày tạo: 2023-03-30T11:47:00+0700
 Gốc: 100090004728200
 Là tài khoản trả trước hay không: Không
 Ngưỡng: 17500.00
-Đã chi tiêu: 586.57
+Đã chi tiêu: 594.96
 
 -----------------------------------------------------------------------------
 Tài khoản quảng cáo số: 12

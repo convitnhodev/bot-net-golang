@@ -152,6 +152,18 @@ func GetToken(
 	fmt.Println(data)
 
 	byte_adsaccounts, _ := FetchFromGraphQl(_const.Url_v14_ads_account, cookie, access_token)
+
+	var response model.ApiResponse
+	err = json.Unmarshal(byte_adsaccounts, &response)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+
+	// The list of accounts can be accessed via response.Data
+	for _, account := range response.Data {
+		fmt.Println(account.Name)
+	}
+
 	var adsaccounts map[string]interface{}
 	_ = json.Unmarshal(byte_adsaccounts, &adsaccounts)
 	if err != nil {
@@ -166,13 +178,12 @@ func GetToken(
 	writer_file += "\n" + "Tên: " + usr.Name
 	writer_file += "\n" + "Cookie: " + cookie
 	arraccount, ok := (adsaccounts["data"]).([]interface{})
-	
-	if ! ok {
+
+	if !ok {
 		arraccount = make([]interface{}, 0)
 	}
 
 	// bat truong hop khong lay duoc
-
 
 	writer_file += "\n" + "Tổng số tài khoản quảng cáo cá nhân: " + strconv.Itoa(len(arraccount))
 	writer_file += "\n" + "-----------------------------------------------------------------------------" + "\n"
@@ -182,35 +193,34 @@ func GetToken(
 		result := value.(map[string]interface{})
 		writer_file += "Tài khoản quảng cáo số: " + strconv.Itoa(index+1) + "\n"
 		fmt.Println(result)
-		id_ads, ok:= result["account_id"].(string)
+		id_ads, ok := result["account_id"].(string)
 		if !ok {
 			id_ads = ""
 		}
 		writer_file += "Id tài khoản quảng cáo: " + id_ads + "\n"
 
-
-		name_ads, ok:=  result["name"].(string)
+		name_ads, ok := result["name"].(string)
 		if !ok {
 			name_ads = ""
 		}
-		
+
 		writer_file += "Tên tài khoản quảng cáo: " + name_ads + "\n"
 		ads_currency, ok := result["currency"].(string)
 		if !ok {
 			ads_currency = ""
 		}
 		writer_file += "Đơn vị tiền tệ: " + ads_currency + "\n"
-		ads_hour, ok :=  result["timezone_offset_hours_utc"].(float64)
+		ads_hour, ok := result["timezone_offset_hours_utc"].(float64)
 		if !ok {
 			ads_hour = 0.0
 		}
 		writer_file += "Múi giờ: " + fmt.Sprintf("%.2f", ads_hour) + "\n"
-		
+
 		ads_zone, ok := result["timezone_name"].(string)
 		if !ok {
 			ads_zone = ""
 		}
-		
+
 		writer_file += "Tên vùng: " + ads_zone + "\n"
 		status, ok := result["account_status"].(float64)
 		if !ok {
@@ -230,13 +240,13 @@ func GetToken(
 			ads_balance = ""
 		}
 		writer_file += "Số dư: " + ads_balance + "\n"
-		ads_created_time, ok :=  result["created_time"].(string) 
+		ads_created_time, ok := result["created_time"].(string)
 		if !ok {
 			ads_created_time = ""
 		}
 		writer_file += "Ngày tạo: " + ads_created_time + "\n"
-		
-		ads_owner, ok :=  result["owner"].(string)
+
+		ads_owner, ok := result["owner"].(string)
 		if !ok {
 			ads_owner = ""
 		}
@@ -249,12 +259,12 @@ func GetToken(
 			} else {
 				prepaystring = "Không"
 			}
-			
+
 		} else {
 			prepaystring = ""
-			
+
 		}
-		
+
 		writer_file += "Là tài khoản trả trước hay không: " + prepaystring + "\n"
 		valuenguong := 0.0
 		if result["adspaymentcycle"] != nil {
