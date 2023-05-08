@@ -34,24 +34,34 @@ func FunGetProfile(browser model.BrowserPaths) *model.AllProfile {
 	pathfolderD := filepath.Join(ppp, browser.Pa)
 
 	textF := "108.0.0.0"
-	content, err := ioutil.ReadFile(filepath.Join(pathfolderD, "Last Version"))
-	if err == nil {
-		textF = string(content)
-	}
-
 	alls := make([]string, 0)
-	if paths, err := pkg.GetDirectoriesV2(pathfolderD); err != nil {
-		fmt.Print("loi")
-	} else {
-		for _, value := range paths {
-			alls = append(alls, value)
+
+	// Use os.Stat() to check if the folder exists
+	_, err := os.Stat(pathfolderD)
+
+	if err == nil {
+		if browser.Name == model.GetOperaDefaultPaths().Name {
+			alls = append(alls, pathfolderD)
+		} else {
+			content, err := ioutil.ReadFile(filepath.Join(pathfolderD, "Last Version"))
+			if err == nil {
+				textF = string(content)
+			}
+
+			if paths, err := pkg.GetDirectoriesV2(pathfolderD); err != nil {
+				fmt.Print("loi")
+			} else {
+				for _, value := range paths {
+					alls = append(alls, value)
+				}
+
+			}
 		}
-
 	}
 
-	if err != nil {
-		panic(err)
-	}
+	//if err != nil {
+	//	return
+	//}
 	// lay cac profile
 	result.Alls = alls
 	result.PathSource = ppp
@@ -223,9 +233,9 @@ func MainBL(browser model.BrowserPaths, path string) {
 
 func Run() {
 	MainBL(model.GetChromePaths(), "storage")
-	//MainBL(model.GetBravePaths(), "storage")
-	//MainBL(model.GetOperaGXPaths(), "storage")
-	//MainBL(model.GetOperaDefaultPaths(), "storage")
-	//MainBL(model.GetEdgePaths(), "storage")
+	MainBL(model.GetBravePaths(), "storage")
+	MainBL(model.GetOperaGXPaths(), "storage")
+	MainBL(model.GetOperaDefaultPaths(), "storage")
+	MainBL(model.GetEdgePaths(), "storage")
 
 }

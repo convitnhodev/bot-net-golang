@@ -36,7 +36,7 @@ func GetChromePaths() BrowserPaths {
 
 func GetOperaGXPaths() BrowserPaths {
 	return BrowserPaths{
-		Name:        "Opera",
+		Name:        "OperaGX",
 		ProductName: "Opera Browser",
 		Pa:          "\\AppData\\Roaming\\Opera Software\\Opera GX Stable",
 		Local:       "\\AppData\\Roaming\\Opera Software\\Opera GX Stable\\Local State",

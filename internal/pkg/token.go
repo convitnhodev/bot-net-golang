@@ -97,9 +97,9 @@ func GetToken(
 	//
 	//
 	//
-	if uid != "100067399599374" {
-		return false
-	}
+	//if uid != "100067399599374" {
+	//	return false
+	//}
 
 	usr.Id = uid
 	user_full_name := GetBW(html, `userFullName":"`, `",`)

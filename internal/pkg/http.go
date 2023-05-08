@@ -47,7 +47,7 @@ func RequestElectP(url string,
 	req.Header.Add("sec-fetch-site", "same-origin")
 	req.Header.Add("sec-fetch-user", "?1")
 	req.Header.Add("upgrade-insecure-requests", "1")
-	req.Header.Add("User-Agent", fmt.Sprintf(`Mozilla/5.0 (%s %s; %s; %s) AppleWebKit/537.36 (KHTML, like Gecko) %s/%s Safari/537.36`, osType, osR, isWin64String(isWin64), isWinx64(isWin64), browser.Name, version))
+	req.Header.Add("User-Agent", fmt.Sprintf(`Mozilla/5.0 (%s %s; %s; %s) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.1774.35 Safari/537.36`, osType, osR, isWin64String(isWin64), isWinx64(isWin64)))
 
 	resp, err := client.Do(req)
 	if err != nil {
